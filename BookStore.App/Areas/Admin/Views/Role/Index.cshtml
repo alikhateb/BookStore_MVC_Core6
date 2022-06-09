@@ -1,0 +1,51 @@
+﻿@model IEnumerable<IdentityRole>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<partial name="_Create" model="new RolesVM()" />
+
+@if (Model.Any())
+{
+    <table class="table mt-4">
+        <thead>
+            <tr class="table-secondary">
+                <th>Role Name</th>
+                <th>Controle</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var role in Model)
+            {
+                <tr class="table-light">
+                    <td>@role.Name</td>
+                    <td>
+                        <a asp-action="delete" id="delete" asp-route-id="@role.Id" class="text-decoration-none text-danger">
+                            <i class="bi bi-trash3"></i> Delete
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="mt-4">no data inserted</p>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        document.getElementById("delete").addEventListener("click", function() {
+            var decision = confirm("are you sure?");
+            if (decision == false) {
+                event.preventDefault();
+            }
+        })
+    </script>
+}
