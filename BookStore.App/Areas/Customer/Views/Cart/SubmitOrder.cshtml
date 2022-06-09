@@ -1,0 +1,116 @@
+﻿@model ShoppingCartVm
+@using Microsoft.Extensions.Options
+@inject IOptions<BookStore.Utility.StripeSettings> stripe
+
+@{
+    ViewData["Title"] = "Submit Order";
+}
+
+<form asp-action="SubmitOrder">
+    <input hidden asp-for="Order.AppUserId" />
+    <section class="card">
+        <article class="card-header">
+            <div class="row">
+                <h4 class="col-6">
+                    Order Summary
+                </h4>
+                <div class="col-6 text-end">
+                    <a asp-action="index" class="btn btn-outline-success">Back To Cart</a>
+                </div>
+            </div>
+        </article>
+        <article class="card-body">
+            <div class="row">
+                <section class="col-6">
+                    <h5 class="mb-3">
+                        Shipping Details:
+                    </h5>
+                    <div class="mb-3 row">
+                        <label asp-for="Order.Username" class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-8">
+                            <input asp-for="Order.Username" class="form-control" />
+                            <span asp-validation-for="Order.Username" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label asp-for="Order.Email" class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-8">
+                            <input asp-for="Order.Email" class="form-control" />
+                            <span asp-validation-for="Order.Email" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label asp-for="Order.PhoneNumber" class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-8">
+                            <input asp-for="Order.PhoneNumber" class="form-control" />
+                            <span asp-validation-for="Order.PhoneNumber" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label asp-for="Order.Address" class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-8">
+                            <input asp-for="Order.Address" class="form-control" />
+                            <span asp-validation-for="Order.Address" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label asp-for="Order.City" class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-8">
+                            <input asp-for="Order.City" class="form-control" />
+                            <span asp-validation-for="Order.City" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label asp-for="Order.State" class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-8">
+                            <input asp-for="Order.State" class="form-control" />
+                            <span asp-validation-for="Order.State" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label asp-for="Order.PostalCode" class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-8">
+                            <input asp-for="Order.PostalCode" class="form-control" />
+                            <span asp-validation-for="Order.PostalCode" class="text-danger"></span>
+                        </div>
+                    </div>
+                </section>
+                <section class="offset-1 col-5">
+                    <h5 class="mb-3">
+                        Order Summary:
+                    </h5>
+                    <ul class="list-group">
+                        @foreach (var item in Model.CartItems)
+                        {
+                            <li class="list-group-item d-flex justify-content-between">
+                                <div>
+                                    <h6 class="my-0">@item.Product.Title</h6>
+                                    <span>Quantity: @item.Count</span>
+                                </div>
+                                <span>@((item.Price * item.Count).ToString("c"))</span>
+                            </li>
+                        }
+                        <li class="list-group-item d-flex list-group-item-success justify-content-between">
+                            <span class="fw-bold">Total Price: </span>
+                            <span class="fw-bold text-danger">@Model.Order.TotalPrice.ToString("c")</span>
+                        </li>
+                    </ul>
+                </section>
+            </div>
+        </article>
+        <article class="card-footer">
+            <div class="d-flex justify-content-between">
+                <span class="pt-1">
+                    Estimate Arravial Date: From [@Model.Order.OrderDate] To [@Model.Order.ShippingDate]
+                </span>
+                <button type="submit" class="btn btn-outline-primary">
+                    Submit
+                </button>
+            </div>
+        </article>
+    </section>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

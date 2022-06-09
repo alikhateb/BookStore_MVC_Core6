@@ -1,0 +1,123 @@
+﻿@{
+    string status = Context.Request.Query["status"];
+    string inprocess = "";
+    string approved = "";
+    string pending = "";
+    string completed = "";
+    string all = "";
+
+    //switch (status)
+    //{
+    //    case "inprocess":
+    //        inprocess = "active";
+    //        break;
+    //    case "pending":
+    //        pending = "active";
+    //        break;
+    //    case "completed":
+    //        completed = "active";
+    //        break;
+    //    default:
+    //        all = "active";
+    //        break;
+    //}
+}
+
+<div class="container p-3">
+    <div class="d-flex justify-content-between pt-4 mb-3">
+        <div class="">
+            <h2 class="text-primary">Order List</h2>
+        </div>
+        <div class="list-group list-group-horizontal">
+            <a class="text-decoration-none list-group-item @all" asp-area="Admin" asp-controller="orders" asp-action="index" asp-route-status="all">
+                All
+            </a>
+            <a class="text-decoration-none list-group-item @approved" asp-area="Admin" asp-controller="orders" asp-action="index" asp-route-status="approved">
+                Approved
+            </a>
+            <a class="text-decoration-none list-group-item @inprocess" asp-area="Admin" asp-controller="orders" asp-action="index" asp-route-status="inprocess">
+                In Process
+            </a>
+            <a class="text-decoration-none list-group-item @pending" asp-area="Admin" asp-controller="orders" asp-action="index" asp-route-status="pending">
+                Payment Pending
+            </a>
+            <a class="text-decoration-none list-group-item @completed" asp-area="Admin" asp-controller="orders" asp-action="index" asp-route-status="completed">
+                Completed
+            </a>
+        </div>
+    </div>
+    <table id="myTable" class="table table-bordered table-striped w-100">
+        <thead>
+            <tr>
+                <th>Order Id</th>
+                <th>Username</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Order Status</th>
+                <th>Payment Status</th>
+                <th>Total Price</th>
+                <th class="text-center"></th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            const params = new Proxy(new URLSearchParams(window.location.search), {
+                get: (searchParams, prop) => searchParams.get(prop),
+            });
+            let value = params.status;
+            let active = document.getElementsByClassName("list-group-item");
+            switch (value) {
+                case "approved":
+                    loadDataTable("approved");
+                    active[1].classList.add("active");
+                    break;
+                case "inprocess":
+                    loadDataTable("inprocess");
+                    active[2].classList.add("active");
+                    break;
+                case "pending":
+                    loadDataTable("pending");
+                    active[3].classList.add("active");
+                    break;
+                case "completed":
+                    loadDataTable("completed");
+                    active[4].classList.add("active");
+                    break;
+                default:
+                    loadDataTable("all");
+                    active[0].classList.add("active");
+            }
+
+        });
+
+        function loadDataTable(status) {
+            $("#myTable").DataTable({
+                ajax: {
+                    url: `/Admin/Orders/GetAll?status=${status}`,
+                },
+                columns: [
+                    { data: "id" },
+                    { data: "username" },
+                    { data: "phoneNumber" },
+                    { data: "email" },
+                    { data: "orderStatus" },
+                    { data: "paymentStatus" },
+                    { data: "totalPrice" },
+                    {
+                        data: "id",
+                        render: function(data) {
+                            return `<a href="/admin/Orders/Details?orderId=${data}" class="text-decoration-none">
+                                        <i class="bi bi-pencil-square"></i> Details
+                                    </a>`;
+                        },
+                    },
+                ],
+            });
+        }
+    </script>
+}
+

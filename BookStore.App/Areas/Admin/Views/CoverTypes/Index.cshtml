@@ -1,0 +1,63 @@
+﻿@model IEnumerable<CoverType>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div class="container p-3">
+    <div class="row pt-4 mb-3">
+        <div class="col-6">
+            <h2 class="text-primary">Cover Type List</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-action="Create" class="btn btn-outline-primary">
+                <i class="bi bi-plus-lg"></i> Create New Category
+            </a>
+        </div>
+    </div>
+    <table class="table table-bordered table-striped w-100">
+        <thead>
+            <tr>
+                <th>Category Name</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Any())
+            {
+                @foreach (var obj in Model)
+                {
+                    <tr>
+                        <td>@obj.Name</td>
+                        <td class="text-center">
+                            <a asp-action="edit" asp-route-id="@obj.Id" class="text-decoration-none">
+                                <i class="bi bi-pencil-square"></i> Edit
+                            </a> |
+                            <a asp-action="delete" id="delete" asp-route-id="@obj.Id" class="text-decoration-none text-danger">
+                                <i class="bi bi-trash3"></i> Delete
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td>no data found</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById("delete").addEventListener("click", function() {
+            var decision = confirm("are you sure?");
+            if (decision == false) {
+                event.preventDefault();
+            }
+        })
+    </script>
+}
