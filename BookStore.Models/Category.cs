@@ -15,6 +15,6 @@ namespace BookStore.Models
 
         [Display(Name = "Created Date")]
         [StringLength(50)]
-        public string CreatedDate { get; set; } = DateTime.Now.ToString("dd-MM-yyyy hh:mm tt");
+        public string CreatedDate { get; set; } = DateTime.Now.ToString("dd/MM/yyyy hh:mm tt");
     }
 }

@@ -101,7 +101,7 @@
         <article class="card-footer">
             <div class="d-flex justify-content-between">
                 <span class="pt-1">
-                    Estimate Arravial Date: From [@Model.Order.OrderDate] To [@Model.Order.ShippingDate]
+                    Estimate Arravial Date: From [@DateTime.Now.AddDays(7).ToString("dd/MM/yyyy")] To [@DateTime.Now.AddDays(14).ToString("dd/MM/yyyy")]
                 </span>
                 <button type="submit" class="btn btn-outline-primary">
                     Submit

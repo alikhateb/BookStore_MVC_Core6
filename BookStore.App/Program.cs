@@ -3,6 +3,7 @@ using BookStore.DataAccess.UnitOfWork;
 using BookStore.Models.ApplicationUser;
 using BookStore.Utility;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Stripe;
 
@@ -30,7 +31,7 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
 
 //register IEmailSender
-//builder.Services.AddSingleton<IEmailSender, EmailSender>();
+builder.Services.AddSingleton<IEmailSender, EmailSender>();
 
 //configure path when authorization is required
 //builder.Services.ConfigureApplicationCookie(options =>
@@ -39,6 +40,15 @@ builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Str
 //    options.LogoutPath = $"/Identity/Account/Logout";
 //    options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
 //});
+
+builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(100);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 var app = builder.Build();
 
@@ -62,6 +72,8 @@ StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:Secretkey"
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.UseSession();
 
 app.MapRazorPages();
 

@@ -1,5 +1,6 @@
 ﻿using BookStore.DataAccess.UnitOfWork;
 using BookStore.Models;
+using BookStore.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -56,6 +57,7 @@ namespace BookStore.App.Areas.Customer.Controllers
         {
             var claimsIdentity = User.Identity as ClaimsIdentity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
             ShoppingCartItem.AppUserId = claim.Value;
 
             if (ShoppingCartItem.Count > 1000)
@@ -79,7 +81,12 @@ namespace BookStore.App.Areas.Customer.Controllers
                 existingShoppingCart.Count = ShoppingCartItem.Count;
                 _unitOfWork.ShoppingCartItem.Update(existingShoppingCart);
             }
+
             _unitOfWork.Save();
+
+            HttpContext.Session.SetInt32(StaticDetails.SessionCart,
+                _unitOfWork.ShoppingCartItem.GetAll(s => s.AppUserId == claim.Value).Count());
+
             return RedirectToAction(nameof(Index));
         }
 

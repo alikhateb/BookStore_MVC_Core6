@@ -29,19 +29,19 @@
             <h2 class="text-primary">Order List</h2>
         </div>
         <div class="list-group list-group-horizontal">
-            <a class="text-decoration-none list-group-item @all" asp-area="Admin" asp-controller="orders" asp-action="index" asp-route-status="all">
+            <a class="list-group-item @all" asp-area="Admin" asp-controller="orders" asp-action="index" asp-route-status="all">
                 All
             </a>
-            <a class="text-decoration-none list-group-item @approved" asp-area="Admin" asp-controller="orders" asp-action="index" asp-route-status="approved">
+            <a class="list-group-item @approved" asp-area="Admin" asp-controller="orders" asp-action="index" asp-route-status="approved">
                 Approved
             </a>
-            <a class="text-decoration-none list-group-item @inprocess" asp-area="Admin" asp-controller="orders" asp-action="index" asp-route-status="inprocess">
+            <a class="list-group-item @inprocess" asp-area="Admin" asp-controller="orders" asp-action="index" asp-route-status="inprocess">
                 In Process
             </a>
-            <a class="text-decoration-none list-group-item @pending" asp-area="Admin" asp-controller="orders" asp-action="index" asp-route-status="pending">
+            <a class="list-group-item @pending" asp-area="Admin" asp-controller="orders" asp-action="index" asp-route-status="pending">
                 Payment Pending
             </a>
-            <a class="text-decoration-none list-group-item @completed" asp-area="Admin" asp-controller="orders" asp-action="index" asp-route-status="completed">
+            <a class="list-group-item @completed" asp-area="Admin" asp-controller="orders" asp-action="index" asp-route-status="completed">
                 Completed
             </a>
         </div>
@@ -111,8 +111,8 @@
                         data: "id",
                         render: function(data) {
                             return `<a href="/admin/Orders/Details?orderId=${data}" class="text-decoration-none">
-                                        <i class="bi bi-pencil-square"></i> Details
-                                    </a>`;
+                                                        <i class="bi bi-pencil-square"></i> Details
+                                                    </a>`;
                         },
                     },
                 ],

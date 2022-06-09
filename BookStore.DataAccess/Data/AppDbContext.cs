@@ -55,5 +55,6 @@ namespace BookStore.DataAccess.Data
         public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
+        public DbSet<ShippingCompany> ShippingCompanies { get; set; }
     }
 }

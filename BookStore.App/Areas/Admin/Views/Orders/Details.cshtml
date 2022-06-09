@@ -1,7 +1,6 @@
-﻿@using BookStore.Utility
-@model OrderVM
+﻿@model OrderVM
 
-<form method="post" asp-action="UpdateOrderDetails">
+<form method="post">
     <input hidden asp-for="Order.Id" />
     <section class="card">
         <article class="card-header">
@@ -132,7 +131,9 @@
                         <div class="col-9">
                             @if (User.IsInRole(StaticDetails.Role_Admin) || User.IsInRole(StaticDetails.Role_Employee))
                             {
-                                <input asp-for="Order.Carrier" class="form-control" />
+                                <select asp-for="Order.Carrier" asp-items="Model.ListItems" class="form-select">
+                                    <option value="">--Select Shipping Company--</option>
+                                </select>
                                 <span asp-validation-for="Order.Carrier" class="text-danger"></span>
                             }
                             else
@@ -170,6 +171,7 @@
                             </div>
                         </div>
                     }
+
                     @if (Model.Order.SessionId is not null)
                     {
                         <div class="col-12 row mb-2">
@@ -197,11 +199,12 @@
                                 }
                                 else
                                 {
-                                    <input asp-for="Order.PaymentDueDate" value="@Model.Order.PaymentDueDate.ToString("dd/MM/yyyy hh:mm tt")" readonly class="form-control" />
+                                    <input asp-for="Order.PaymentDueDate" readonly class="form-control" />
                                 }
                             </div>
                         </div>
                     }
+
                     <div class="col-12 row mb-2">
                         <label asp-for="Order.PaymentStatus" class="col-form-label col-3"></label>
                         <div class="col-9">
@@ -239,40 +242,44 @@
                                 <span class="text-danger fw-bold">@Model.Order.TotalPrice.ToString("c")</span>
                             </li>
                         </ul>
+
+                        @if (Model.Order.PaymentStatus == StaticDetails.PaymentStatusDelayedPayment &&
+                        Model.Order.OrderStatus == StaticDetails.StatusShipped)
+                        {
+                            <div class="list-group mb-2">
+                                <button type="submit" asp-action="PayNow" class="btn btn-outline-primary">
+                                    Pay Now
+                                </button>
+                            </div>
+                        }
+
                         @if (User.IsInRole(StaticDetails.Role_Admin) || User.IsInRole(StaticDetails.Role_Employee))
                         {
                             @if (Model.Order.OrderStatus == StaticDetails.StatusApproved)
                             {
                                 <div class="list-group mb-2">
-                                    <a asp-action="" class="btn btn-outline-primary">
+                                    <button type="submit" asp-action="StartProcessing" class="btn btn-outline-primary">
                                         Start Processing
-                                    </a>
+                                    </button>
                                 </div>
                             }
+
                             @if (Model.Order.OrderStatus == StaticDetails.StatusInProcess)
                             {
                                 <div class="list-group mb-2">
-                                    <a href="#" class="btn btn-outline-primary">
+                                    <button type="submit" asp-action="ShipOrder" onclick="return validateInput()" class="btn btn-outline-primary">
                                         Ship Order
-                                    </a>
+                                    </button>
                                 </div>
                             }
-                            @if (Model.Order.PaymentStatus == StaticDetails.PaymentStatusDelayedPayment &&
-                           Model.Order.OrderStatus == StaticDetails.StatusShipped)
-                            {
-                                <div class="list-group mb-2">
-                                    <a href="#" class="btn btn-outline-primary">
-                                        Pay Now
-                                    </a>
-                                </div>
-                            }
+
                             @if (Model.Order.PaymentStatus != StaticDetails.StatusRefunded &&
-                           Model.Order.OrderStatus != StaticDetails.StatusCancelled)
+                           Model.Order.OrderStatus != StaticDetails.StatusCancelled && Model.Order.OrderStatus != StaticDetails.StatusShipped)
                             {
                                 <div class="list-group mb-2">
-                                    <a href="#" class="btn btn-outline-primary">
+                                    <button type="submit" asp-action="CancelOrder" onclick="cancelation()" class="btn btn-outline-primary">
                                         Cancel
-                                    </a>
+                                    </button>
                                 </div>
                             }
                         }
@@ -281,9 +288,48 @@
             </div>
         </article>
         <article class="card-footer">
-            <div class="text-end">
-                <button type="submit" class="btn btn-outline-primary">Update Order Details</button>
-            </div>
+            @if (User.IsInRole(StaticDetails.Role_Admin) || User.IsInRole(StaticDetails.Role_Employee))
+            {
+                <div class="text-end">
+                    <button type="submit" asp-action="UpdateOrderDetails" class="btn btn-outline-primary">Update Order Details</button>
+                </div>
+            }
         </article>
     </section>
 </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function validateInput() {
+            if (document.getElementById("Order_Carrier").value == "") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Carrier field is required!',
+                    footer: '<a href="">Why do I have this issue?</a>'
+                })
+                return false;
+            }
+
+            if (document.getElementById("Order_TrackingNumber").value == "") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Tracking Number field is required!',
+                    footer: '<a href="">Why do I have this issue?</a>'
+                })
+                return false;
+            }
+
+            return true;
+        }
+
+        function cancelation() {
+            var decision = confirm("are you sure?");
+            if (decision == false) {
+                event.preventDefault();
+            }
+        }
+    </script>
+}

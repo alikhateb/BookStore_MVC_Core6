@@ -18,7 +18,7 @@ namespace BookStore.Models
 
         [StringLength(20)]
         [Display(Name = "Shipping Date")]
-        public string ShippingDate { get; set; } = DateTime.Now.AddDays(7).ToString("dd/MM/yyyy");
+        public string? ShippingDate { get; set; }
 
         [Display(Name = "Total Price")]
         public double TotalPrice { get; set; }
@@ -43,7 +43,8 @@ namespace BookStore.Models
         public string? PaymentDate { get; set; }
 
         [Display(Name = "Payment Due Date")]
-        public DateTime PaymentDueDate { get; set; }
+        [StringLength(20)]
+        public string? PaymentDueDate { get; set; }
 
         [StringLength(200)]
         public string? SessionId { get; set; }

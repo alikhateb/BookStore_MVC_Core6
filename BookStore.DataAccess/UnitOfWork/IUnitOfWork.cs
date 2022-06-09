@@ -12,6 +12,7 @@ namespace BookStore.DataAccess.UnitOfWork
         IShoppingCartItemRepository ShoppingCartItem { get; }
         IBaseRepository<OrderDetail> OrderDetail { get; }
         IOrderRepository Order { get; }
+        IBaseRepository<ShippingCompany> ShippingCompany { get; }
         void Save();
     }
 }

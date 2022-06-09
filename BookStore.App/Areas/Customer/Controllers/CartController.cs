@@ -5,6 +5,7 @@ using BookStore.Models.ViewModels;
 using BookStore.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Stripe.Checkout;
 
@@ -15,16 +16,18 @@ namespace BookStore.App.Areas.Customer.Controllers
     public class CartController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IEmailSender _emailSender;
         private readonly UserManager<AppUser> _userManager;
 
         [BindProperty]
         public ShoppingCartVm ShoppingCartVm { get; set; }
         public AppUser AppUser { get; set; }
 
-        public CartController(IUnitOfWork _unitOfWork, UserManager<AppUser> _userManager)
+        public CartController(IUnitOfWork _unitOfWork, UserManager<AppUser> _userManager, IEmailSender _emailSender)
         {
             this._unitOfWork = _unitOfWork;
             this._userManager = _userManager;
+            this._emailSender = _emailSender;
         }
 
         public IActionResult Index()
@@ -119,8 +122,8 @@ namespace BookStore.App.Areas.Customer.Controllers
                         },
                         LineItems = new List<SessionLineItemOptions>(),
                         Mode = "payment",
-                        SuccessUrl = $"https://localhost:7199/customer/cart/OrderConfirmation?id={ShoppingCartVm.Order.Id}",
-                        CancelUrl = $"https://localhost:7199/customer/cart/index",
+                        SuccessUrl = $"https://localhost:44365/customer/cart/OrderConfirmation?id={ShoppingCartVm.Order.Id}",
+                        CancelUrl = $"https://localhost:44365/customer/cart/index",
                     };
 
                     foreach (var item in ShoppingCartVm.CartItems)
@@ -179,13 +182,13 @@ namespace BookStore.App.Areas.Customer.Controllers
                     var options = new SessionCreateOptions
                     {
                         PaymentMethodTypes = new List<string>
-                            {
-                                "card",
-                            },
+                        {
+                            "card",
+                        },
                         LineItems = new List<SessionLineItemOptions>(),
                         Mode = "payment",
-                        SuccessUrl = $"https://localhost:7199/customer/cart/OrderConfirmation?id={order.Id}",
-                        CancelUrl = $"https://localhost:7199/customer/cart/index",
+                        SuccessUrl = $"https://localhost:44365/customer/cart/OrderConfirmation?id={order.Id}",
+                        CancelUrl = $"https://localhost:44365/customer/cart/index",
                     };
 
                     foreach (var item in ShoppingCartVm.CartItems)
@@ -224,21 +227,27 @@ namespace BookStore.App.Areas.Customer.Controllers
         {
             Order order = _unitOfWork.Order.FindObject(x => x.Id == id);
 
-            if (order.PaymentStatus == StaticDetails.PaymentStatusPending)  //for individual user
+            if (order.PaymentStatus != StaticDetails.PaymentStatusDelayedPayment)  //for individual user
             {
                 //check the stripe status
                 var service = new SessionService();
                 Session session = service.Get(order.SessionId);
+
                 if (session.PaymentStatus.ToLower() == "paid")
                 {
+                    order.PaymentDate = DateTime.Now.ToString("dd/MM/yyyy hh:mm tt");
                     _unitOfWork.Order.UpdateStatus(id, StaticDetails.StatusApproved, StaticDetails.PaymentStatusApproved);
                     _unitOfWork.Save();
                 }
             }
 
+            _emailSender.SendEmailAsync(order.Email, "New Order From Book Store", "<p>Congratulations New Order Is Created Successfully</p>");
+
             IEnumerable<ShoppingCartItem> shoppingCartItems = _unitOfWork.ShoppingCartItem.GetAll(x => x.AppUserId == order.AppUserId);
             _unitOfWork.ShoppingCartItem.RemoveRange(shoppingCartItems);
             _unitOfWork.Save();
+
+            HttpContext.Session.Clear();
 
             return View(id);
         }
@@ -266,6 +275,10 @@ namespace BookStore.App.Areas.Customer.Controllers
             var cartItem = _unitOfWork.ShoppingCartItem.FindObject(x => x.Id == itemId);
             _unitOfWork.ShoppingCartItem.Remove(cartItem);
             _unitOfWork.Save();
+
+            HttpContext.Session.SetInt32(StaticDetails.SessionCart,
+                _unitOfWork.ShoppingCartItem.GetAll(s => s.AppUserId == cartItem.AppUserId).Count());
+
             return RedirectToAction(nameof(Index));
         }
 

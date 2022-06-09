@@ -19,6 +19,7 @@ namespace BookStore.DataAccess.UnitOfWork
             ShoppingCartItem = new ShoppingCartItemRepository(_context);
             OrderDetail = new BaseRepository<OrderDetail>(_context);
             Order = new OrderRepository(_context);
+            ShippingCompany = new BaseRepository<ShippingCompany>(_context);
         }
 
         public IBaseRepository<Category> Category { get; private set; }
@@ -28,6 +29,7 @@ namespace BookStore.DataAccess.UnitOfWork
         public IShoppingCartItemRepository ShoppingCartItem { get; private set; }
         public IBaseRepository<OrderDetail> OrderDetail { get; private set; }
         public IOrderRepository Order { get; private set; }
+        public IBaseRepository<ShippingCompany> ShippingCompany { get; private set; }
 
         public void Save()
         {

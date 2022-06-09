@@ -4,77 +4,85 @@
     ViewData["Title"] = "Details";
 }
 
+
+
+<form method="post" asp-action="Details">
+    <input hidden asp-for="ProductId" />
+    <div class="container row justify-content-between">
+        <section class="col-6">
+            <div>
+                <h2>@Model.Product.Title</h2>
+                <p>By @Model.Product.Author</p>
+            </div>
+            <div>
+                <span class="badge bg-info">@Model.Product.Category.Name</span>
+                <span class="badge bg-warning">@Model.Product.CoverType.Name</span>
+            </div>
+            <div>
+                <p class="mt-3">
+                    <span class="me-2 fw-bold">ISBN:</span> @Model.Product.ISBN
+                </p>
+                <p>
+                    <span class="me-2 fw-bold">List Price:</span> @Model.Product.Price.ToString("c")
+                </p>
+            </div>
+            <div class="row justify-content-around">
+                <p class="col-3 fw-bold">
+                    Quantity
+                </p>
+                <p class="col-3">
+                    1-50
+                </p>
+                <p class="col-3">
+                    51-100
+                </p>
+                <p class="col-3">
+                    +100
+                </p>
+            </div>
+            <hr />
+            <div class="row justify-content-around">
+                <p class="col-3 fw-bold">
+                    Price
+                </p>
+                <p class="col-3">
+                    @Model.Product.Price.ToString("c")
+                </p>
+                <p class="col-3">
+                    @Model.Product.Price50.ToString("c")
+                </p>
+                <p class="col-3">
+                    @Model.Product.Price100.ToString("c")
+                </p>
+            </div>
+            <div>
+                <span class="me-2 fw-bold">Description:</span> @Model.Product.Description
+            </div>
+            <div class="row">
+                <div class="col-2">
+                    <h4>Count</h4>
+                </div>
+                <div class="col-10">
+                    <input asp-for="Count" class=" form-control" />
+                    <span asp-validation-for="Count" class="text-danger"></span>
+                </div>
+            </div>
+        </section>
+        <div class="col-6">
+            <img src="@Model.Product.ImageUrl" alt="book image" />
+        </div>
+        <div class="mt-2">
+            <button type="submit" class="btn btn-primary">Add To CSart</button>
+            <a asp-action="index" class="btn btn-secondary">Back To Home</a>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
 @section Styles{
     <link rel="stylesheet" href="~/css/BookDetails.css" />
 }
 
-    <form method="post" asp-action="Details">
-        <input hidden asp-for="ProductId" />
-        <div class="container row justify-content-between">
-            <section class="col-6">
-                <div>
-                    <h2>@Model.Product.Title</h2>
-                    <p>By @Model.Product.Author</p>
-                </div>
-                <div>
-                    <span class="badge bg-info">@Model.Product.Category.Name</span>
-                    <span class="badge bg-warning">@Model.Product.CoverType.Name</span>
-                </div>
-                <div>
-                    <p class="mt-3">
-                        <span class="me-2 fw-bold">ISBN:</span> @Model.Product.ISBN
-                    </p>
-                    <p>
-                        <span class="me-2 fw-bold">List Price:</span> @Model.Product.Price.ToString("c")
-                    </p>
-                </div>
-                <div class="row justify-content-around">
-                    <p class="col-3 fw-bold">
-                        Quantity
-                    </p>
-                    <p class="col-3">
-                        1-50
-                    </p>
-                    <p class="col-3">
-                        51-100
-                    </p>
-                    <p class="col-3">
-                        +100
-                    </p>
-                </div>
-                <hr />
-                <div class="row justify-content-around">
-                    <p class="col-3 fw-bold">
-                        Price
-                    </p>
-                    <p class="col-3">
-                        @Model.Product.Price.ToString("c")
-                    </p>
-                    <p class="col-3">
-                        @Model.Product.Price50.ToString("c")
-                    </p>
-                    <p class="col-3">
-                        @Model.Product.Price100.ToString("c")
-                    </p>
-                </div>
-                <div>
-                    <span class="me-2 fw-bold">Description:</span> @Model.Product.Description
-                </div>
-                <div class="row">
-                    <div class="col-2">
-                        <h4>Count</h4>
-                    </div>
-                    <div class="col-10">
-                        <input asp-for="Count" class=" form-control" />
-                    </div>
-                </div>
-            </section>
-            <div class="col-6">
-                <img src="@Model.Product.ImageUrl" alt="book image" />
-            </div>
-            <div class="mt-2">
-                <button type="submit" class="btn btn-primary">Add To CSart</button>
-                <a asp-action="index" class="btn btn-secondary">Back To Home</a>
-            </div>
-        </div>
-    </form>
