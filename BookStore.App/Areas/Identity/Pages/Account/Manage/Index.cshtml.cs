@@ -33,14 +33,14 @@ namespace BookStore.App.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Required,
-            MaxLength(50),
-            Display(Name = "First Name")]
+            [Required]
+            [MaxLength(50)]
+            [Display(Name = "First Name")]
             public string FirstName { get; set; }
 
-            [Required,
-             MaxLength(50),
-             Display(Name = "Last Name")]
+            [Required]
+            [MaxLength(50)]
+            [Display(Name = "Last Name")]
             public string LastName { get; set; }
 
             [Display(Name = "Profile Picture")]
@@ -119,10 +119,9 @@ namespace BookStore.App.Areas.Identity.Pages.Account.Manage
 
             user.FirstName = Input.FirstName;
             user.LastName = Input.LastName;
-            user.UserName = $"{Input.FirstName}_{Input.LastName}";
+            user.UserName = $"{Input.FirstName}{Input.LastName}";
 
             var userWithSameUserName = await _userManager.FindByNameAsync(user.UserName);
-
             if (userWithSameUserName is not null && userWithSameUserName.Id != user.Id)
             {
                 ModelState.AddModelError("UserName", "username already exists please change first name or last name or both.");

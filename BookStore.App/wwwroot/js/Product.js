@@ -45,12 +45,14 @@ function loadDataTable() {
             {
                 data: "id",
                 render: function (data) {
-                    return `<a href="/admin/products/Upsert/${data}" class="text-decoration-none">
-                                <i class="bi bi-pencil-square"></i> Edit
-                            </a> |
-                            <a href="/admin/products/delete/${data}" onclick="del()" class="text-decoration-none text-danger">
-                                <i class="bi bi-trash3"></i> Delete
-                            </a>`;
+                    return `<div class="d-flex justify-content-between">
+                                <a href="/admin/products/Upsert/${data}" class="text-decoration-none">
+                                    <i class="bi bi-pencil-square"></i> Edit
+                                </a> |
+                                <a href="/admin/products/delete/${data}" onclick="del()" class="text-decoration-none text-danger">
+                                    <i class="bi bi-trash3"></i> Delete
+                                </a>
+                            </div>`;
                 },
             },
         ],

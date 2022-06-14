@@ -14,7 +14,13 @@
              alt="profile picture" id="avatar" class="rounded-circle" />
             </li>
         }
-        <li class="nav-item">
+        else
+        {
+            <li class="nav-item">
+                <img src="~/assets/user/profile-picture.png" alt="profile picture" id="avatar" class="rounded-circle" />
+            </li>
+        }
+        <li class="nav-item" id="manage-container">
             <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@UserManager.GetUserName(User)</a>
         </li>
         <li class="nav-item">

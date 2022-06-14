@@ -30,14 +30,16 @@
                 <label asp-for="Input.PhoneNumber" class="form-label"></label>
                 <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
             </div>
-            <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
+            <div>
+                <button id="update-profile-button" type="submit" class="btn btn-primary">Save</button>
+            </div>
         </div>
         <div class="col-6">
             <label asp-for="Input.ProfilePicture" class="form-label"></label>
             <div class="mb-3">
                 @if (Model.Input.ProfilePicture is null)
                 {
-                    <img src="~/assets/user/icon-512.png" alt="profile picture"
+                    <img src="~/assets/user/profile-picture.png" alt="profile picture"
                      id="profile-pic" />
                 }
                 else

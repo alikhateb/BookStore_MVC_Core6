@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BookStore.App.Areas.Admin.Controllers
 {
     [Area("admin")]
-    [Authorize(Roles = StaticDetails.Role_Admin)]
+    [Authorize(Roles = $"{StaticDetails.Role_Admin}, {StaticDetails.Role_Employee}")]
     public class CoverTypesController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

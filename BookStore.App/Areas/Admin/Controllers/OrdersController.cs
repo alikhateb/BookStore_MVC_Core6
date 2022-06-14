@@ -1,5 +1,4 @@
 ﻿using BookStore.DataAccess.UnitOfWork;
-using BookStore.Models;
 using BookStore.Models.ViewModels;
 using BookStore.Utility;
 using Microsoft.AspNetCore.Authorization;
@@ -12,7 +11,7 @@ using System.Security.Claims;
 namespace BookStore.App.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize]
+    [Authorize(Roles = $"{StaticDetails.Role_Admin}, {StaticDetails.Role_Employee}")]
     public class OrdersController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -69,7 +68,7 @@ namespace BookStore.App.Areas.Admin.Controllers
                 var claimsIdentity = User.Identity as ClaimsIdentity;
                 var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
 
-                orders = _unitOfWork.Order.GetAll(o => o.AppUserId == claim.Value).ToList();
+                orders = _unitOfWork.Order.GetAll(o => o.AppUserId == claim.Value).OrderBy(x => x.Id).ToList();
 
                 if (orders is null)
                 {

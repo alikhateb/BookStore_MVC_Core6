@@ -34,3 +34,7 @@ body {
     width: 40px;
     object-fit: cover;
 }
+
+#manage-container {
+    width: max-content;
+}

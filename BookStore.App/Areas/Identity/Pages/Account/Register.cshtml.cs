@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -128,14 +127,6 @@ namespace BookStore.App.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            if (!await _roleManager.RoleExistsAsync(StaticDetails.Role_Admin))   //add roles
-            {
-                await _roleManager.CreateAsync(new IdentityRole(StaticDetails.Role_Admin));
-                await _roleManager.CreateAsync(new IdentityRole(StaticDetails.Role_Employee));
-                await _roleManager.CreateAsync(new IdentityRole(StaticDetails.Role_User_Comp));
-                await _roleManager.CreateAsync(new IdentityRole(StaticDetails.Role_User_Indi));
-            }
-
             Input = new InputModel();
 
             LoadSelectListItem();
@@ -151,18 +142,17 @@ namespace BookStore.App.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new AppUser
-                {
-                    FirstName = Input.FirstName,
-                    LastName = Input.LastName,
-                    UserName = $"{Input.FirstName}_{Input.LastName}",
-                    Email = Input.Email,
-                    Address = Input.Address,
-                    City = Input.City,
-                    State = Input.State,
-                    PostalCode = Input.PostalCode,
-                    PhoneNumber = Input.PhoneNumber,
-                };
+                var user = CreateUser();
+
+                user.FirstName = Input.FirstName;
+                user.LastName = Input.LastName;
+                user.UserName = $"{Input.FirstName}{Input.LastName}";
+                user.Email = Input.Email;
+                user.Address = Input.Address;
+                user.City = Input.City;
+                user.State = Input.State;
+                user.PostalCode = Input.PostalCode;
+                user.PhoneNumber = Input.PhoneNumber;
 
                 if (Input.CompanyId is not null && Input.Role == StaticDetails.Role_User_Comp)
                 {
@@ -191,6 +181,7 @@ namespace BookStore.App.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+                    //set role for user
                     if (Input.Role is null)
                     {
                         await _userManager.AddToRoleAsync(user, StaticDetails.Role_User_Indi);
@@ -220,7 +211,11 @@ namespace BookStore.App.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        if (!User.IsInRole(StaticDetails.Role_Admin))
+                        {
+                            await _signInManager.SignInAsync(user, isPersistent: false);
+                        }
+
                         return LocalRedirect(returnUrl);
                     }
                 }
@@ -231,6 +226,7 @@ namespace BookStore.App.Areas.Identity.Pages.Account
             }
 
             // If we got this far, something failed, redisplay form
+            LoadSelectListItem();
             return Page();
         }
 

@@ -1,0 +1,121 @@
+﻿@model IEnumerable<UserVM>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="d-flex justify-content-between pt-4 mb-3">
+    <div>
+        <h2 class="text-primary">Manage User Roles</h2>
+    </div>
+    <div class="list-group list-group-horizontal">
+        <a class="list-group-item" asp-area="Admin" asp-controller="account" asp-action="index" asp-route-status="All">
+            All
+        </a>
+        <a class="list-group-item" asp-area="Admin" asp-controller="account" asp-action="index" asp-route-status="@StaticDetails.Role_Admin">
+            Admins
+        </a>
+        <a class="list-group-item" asp-area="Admin" asp-controller="account" asp-action="index" asp-route-status="@StaticDetails.Role_Employee">
+            Employees
+        </a>
+        <a class="list-group-item" asp-area="Admin" asp-controller="account" asp-action="index" asp-route-status="@StaticDetails.Role_User_Comp">
+            Company Users
+        </a>
+        <a class="list-group-item" asp-area="Admin" asp-controller="account" asp-action="index" asp-route-status="@StaticDetails.Role_User_Indi">
+            Individual Users
+        </a>
+    </div>
+</div>
+
+<table class="table table-striped table-bordered pt-3 mb-2" id="myTable">
+    <thead>
+        <tr class="table-secondary">
+            <th>Username</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Roles</th>
+            <th>Controles</th>
+        </tr>
+    </thead>
+    @*    <tbody>
+    @foreach (var obj in Model)
+    {
+    <tr class="table-light">
+    <td>@obj.UserName </td>
+    <td>@obj.Email </td>
+    <td>@obj.Phone </td>
+    <td>@string.Join(" - ", obj.Roles)</td>
+    <td>
+    <a asp-action="ManageUserRoles" asp-route-UserId="@obj.Id" class="btn btn-outline-primary">Manage Roles</a>
+    </td>
+    </tr>
+    }
+    </tbody>*@
+</table>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            const params = new Proxy(new URLSearchParams(window.location.search), {
+                get: (searchParams, prop) => searchParams.get(prop),
+            });
+            let value = params.status;
+            let active = document.getElementsByClassName("list-group-item");
+            switch (value) {
+                case "Admin":
+                    loadDataTable("Admin");
+                    active[1].classList.add("active");
+                    break;
+                case "Employee":
+                    loadDataTable("Employee");
+                    active[2].classList.add("active");
+                    break;
+                case "Company":
+                    loadDataTable("Company");
+                    active[3].classList.add("active");
+                    break;
+                case "Individual":
+                    loadDataTable("Individual");
+                    active[4].classList.add("active");
+                    break;
+                default:
+                    loadDataTable("all");
+                    active[0].classList.add("active");
+            }
+        });
+
+        function loadDataTable(status) {
+            $("#myTable").DataTable({
+                //"serverSide": true,
+                //"filter": true,
+                ajax: {
+                    url: `/Admin/account/GetAll?status=${status}`,
+                    //type: "post"
+                },
+                columns: [
+                    { "data": "username" },
+                    { "data": "email" },
+                    { "data": "phone" },
+                    {
+                        "data": "roles",
+                        "render": function(data) {
+                            return data.join(" - ");
+                        },
+                        "orderable": false
+                    }, 
+                    {
+                        "data": "id",
+                        "render": function(data) {
+                            return `<div class="text-center">
+                                        <a href="/admin/account/ManageUserRoles?UserId=${data}" class="btn btn-primary">
+                                            <i class="bi bi-pencil-square"></i> Details
+                                        </a>
+                                    </div>`;
+                        },
+                        "orderable": false
+                    },
+                ],
+            });
+        }
+    </script>
+}

@@ -1,4 +1,5 @@
 using BookStore.DataAccess.Data;
+using BookStore.DataAccess.DbInitializer;
 using BookStore.DataAccess.UnitOfWork;
 using BookStore.Models.ApplicationUser;
 using BookStore.Utility;
@@ -50,6 +51,14 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
+builder.Services.AddAuthentication().AddFacebook(options =>
+{
+    options.AppId = "788840455858078";
+    options.AppSecret = "435ac457a004af61784ba3dc397db7c3";
+});
+
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -65,6 +74,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+SeedDatabase();
 
 //configure Stripe api key in pipeline
 StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:Secretkey").Get<string>();
@@ -82,3 +93,10 @@ app.MapControllerRoute(
     pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+void SeedDatabase()
+{
+    using var scope = app.Services.CreateScope();
+    var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+    dbInitializer.Initialize();
+}

@@ -9,23 +9,75 @@
             </a>
         </div>
     </div>
-    <table id="myTable" class="table table-bordered table-striped w-100">
+    <table class="table table-striped table-bordered pt-3 mb-2" id="myTable">
         <thead>
-            <tr>
+            <tr class="table-secondary">
                 <th>Title</th>
                 <th>ISBN</th>
                 <th>Price</th>
                 <th>Author</th>
                 <th>Category</th>
                 <th>Cover Type</th>
-                <th class="text-center"></th>
+                <th></th>
             </tr>
         </thead>
-        <tbody>
-        </tbody>
     </table>
 </div>
 
 @section Scripts{
-    <script src="~/js/Product.js"></script>
+    <script>
+        $(document).ready(function() {
+            loadDataTable();
+        });
+
+        function loadDataTable() {
+            $("#myTable").DataTable({
+                ajax: {
+                    url: "/Admin/Products/GetAll",
+                },
+                columns: [
+                    { data: "title" },
+                    { data: "isbn" },
+                    { data: "price" },
+                    { data: "author" },
+                    { data: "category.name" },
+                    { data: "coverType.name" },
+                    {
+                        data: "id",
+                        render: function(data) {
+                            return `<div class="text-center">
+                                        <a href="/admin/products/Upsert/${data}" class="btn btn-primary">
+                                            <i class="bi bi-pencil-square"></i> Edit
+                                        </a>
+                                        <a href="/admin/products/delete/${data}" onclick="del()" class="btn btn-danger">
+                                            <i class="bi bi-trash3"></i> Delete
+                                        </a>
+                                    </div>`;
+                        },
+                    },
+                ],
+            });
+        }
+
+        function del() {
+            //Swal.fire({
+            //    title: "Are you sure?",
+            //    text: "You won't be able to revert this!",
+            //    icon: "warning",
+            //    showCancelButton: true,
+            //    confirmButtonColor: "#3085d6",
+            //    cancelButtonColor: "#d33",
+            //    confirmButtonText: "Yes, delete it!",
+            //}).then((result) => {
+            //    if (result.isConfirmed) {
+            //        loadDataTable();
+            //    }
+            //});
+
+            var decision = confirm("are you sure?");
+            if (decision == false) {
+                event.preventDefault();
+            }
+        };
+    </script>
     }
