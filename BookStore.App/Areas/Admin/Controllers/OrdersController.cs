@@ -210,8 +210,8 @@ namespace BookStore.App.Areas.Admin.Controllers
                 },
                 LineItems = new List<SessionLineItemOptions>(),
                 Mode = "payment",
-                SuccessUrl = $"https://localhost:44365/admin/orders/PaymentConfirmation?orderId={OrderVM.Order.Id}",
-                CancelUrl = $"https://localhost:44365/admin/orders/Details?orderId={OrderVM.Order.Id}",
+                SuccessUrl = $"https://localhost:7199/admin/orders/PaymentConfirmation?orderId={OrderVM.Order.Id}",
+                CancelUrl = $"https://localhost:7199/admin/orders/Details?orderId={OrderVM.Order.Id}",
             };
 
             foreach (var item in OrderVM.OrderDetails)
@@ -246,7 +246,7 @@ namespace BookStore.App.Areas.Admin.Controllers
         {
             var order = _unitOfWork.Order.FindObject(x => x.Id == orderId);
 
-            if (order.PaymentStatus == StaticDetails.PaymentStatusDelayedPayment)  //for individual user
+            if (order.PaymentStatus == StaticDetails.PaymentStatusDelayedPayment)
             {
                 //check the stripe status
                 var service = new SessionService();

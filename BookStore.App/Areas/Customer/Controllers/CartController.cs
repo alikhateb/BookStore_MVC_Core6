@@ -122,8 +122,8 @@ namespace BookStore.App.Areas.Customer.Controllers
                         },
                         LineItems = new List<SessionLineItemOptions>(),
                         Mode = "payment",
-                        SuccessUrl = $"https://localhost:44365/customer/cart/OrderConfirmation?id={ShoppingCartVm.Order.Id}",
-                        CancelUrl = $"https://localhost:44365/customer/cart/index",
+                        SuccessUrl = $"https://localhost:7199/customer/cart/OrderConfirmation?id={ShoppingCartVm.Order.Id}",
+                        CancelUrl = $"https://localhost:7199/customer/cart/index",
                     };
 
                     foreach (var item in ShoppingCartVm.CartItems)
@@ -187,8 +187,8 @@ namespace BookStore.App.Areas.Customer.Controllers
                         },
                         LineItems = new List<SessionLineItemOptions>(),
                         Mode = "payment",
-                        SuccessUrl = $"https://localhost:44365/customer/cart/OrderConfirmation?id={order.Id}",
-                        CancelUrl = $"https://localhost:44365/customer/cart/index",
+                        SuccessUrl = $"https://localhost:7199/customer/cart/OrderConfirmation?id={order.Id}",
+                        CancelUrl = $"https://localhost:7199/customer/cart/index",
                     };
 
                     foreach (var item in ShoppingCartVm.CartItems)
