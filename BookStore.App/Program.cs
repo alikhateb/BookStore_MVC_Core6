@@ -16,8 +16,10 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
 //register Db options 
-builder.Services.AddDbContext<AppDbContext>(options => 
-options.UseSqlServer(builder.Configuration.GetConnectionString("cs")));
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("cs"));
+});
 
 //register UserManager<IdentityUser> == repository for IdentityUser class - RoleManager<IdentityRole> - SignInManager<IdentityUser> 
 builder.Services.AddIdentity<AppUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)

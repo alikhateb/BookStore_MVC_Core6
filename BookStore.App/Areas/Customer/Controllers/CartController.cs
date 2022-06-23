@@ -67,7 +67,8 @@ namespace BookStore.App.Areas.Customer.Controllers
         {
             AppUser = _userManager.GetUserAsync(User).Result;
 
-            ShoppingCartVm.CartItems = _unitOfWork.ShoppingCartItem.GetAll(x => x.AppUserId == AppUser.Id, p => p.Product);
+            //ShoppingCartVm.CartItems = _unitOfWork.ShoppingCartItem.GetAll(x => x.AppUserId == AppUser.Id, p => p.Product);
+            ShoppingCartVm.CartItems = _unitOfWork.ShoppingCartItem.GetAll(x => x.AppUserId == AppUser.Id);
 
             foreach (var item in ShoppingCartVm.CartItems)
             {
@@ -286,7 +287,8 @@ namespace BookStore.App.Areas.Customer.Controllers
         {
             ShoppingCartVm = new ShoppingCartVm
             {
-                CartItems = _unitOfWork.ShoppingCartItem.GetAll(x => x.AppUserId == user.Id, p => p.Product),
+                //CartItems = _unitOfWork.ShoppingCartItem.GetAll(x => x.AppUserId == user.Id, p => p.Product),
+                CartItems = _unitOfWork.ShoppingCartItem.GetAll(x => x.AppUserId == user.Id),
                 Order = new Order()
             };
 

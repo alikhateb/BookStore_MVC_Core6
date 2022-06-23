@@ -30,7 +30,8 @@ namespace BookStore.App.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var products = _unitOfWork.Product.GetAll(x => x.Category, p => p.CoverType).OrderBy(x => x.Title);
+            //var products = _unitOfWork.Product.GetAll(x => x.Category, p => p.CoverType).OrderBy(x => x.Title);
+            var products = _unitOfWork.Product.GetAll().OrderBy(x => x.Title);
             if (products is null)
             {
                 return NotFound("no data found");

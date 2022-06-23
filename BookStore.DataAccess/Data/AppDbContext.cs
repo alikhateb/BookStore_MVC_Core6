@@ -48,13 +48,13 @@ namespace BookStore.DataAccess.Data
             });
         }
 
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<CoverType> CoverTypes { get; set; }
-        public DbSet<Product> Products { get; set; }
-        public DbSet<Company> Companies { get; set; }
-        public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
-        public DbSet<Order> Orders { get; set; }
-        public DbSet<OrderDetail> OrderDetails { get; set; }
-        public DbSet<ShippingCompany> ShippingCompanies { get; set; }
+        public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<CoverType> CoverTypes { get; set; }
+        public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<Company> Companies { get; set; }
+        public virtual DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<OrderDetail> OrderDetails { get; set; }
+        public virtual DbSet<ShippingCompany> ShippingCompanies { get; set; }
     }
 }

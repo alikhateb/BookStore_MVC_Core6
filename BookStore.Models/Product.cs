@@ -41,10 +41,10 @@ namespace BookStore.Models
 
         [Display(Name = "Category")]
         public int CategoryId { get; set; }
-        public Category? Category { get; set; }
+        public virtual Category? Category { get; set; }
 
         [Display(Name = "Cover Type")]
         public int CoverTypeId { get; set; }
-        public CoverType? CoverType { get; set; }
+        public virtual CoverType? CoverType { get; set; }
     }
 }

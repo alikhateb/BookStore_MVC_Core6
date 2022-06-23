@@ -10,7 +10,7 @@ namespace BookStore.Models
         [Required]
         [StringLength(450)]
         public string? AppUserId { get; set; }
-        public AppUser? AppUser { get; set; }
+        public virtual AppUser? AppUser { get; set; }
 
         [StringLength(20)]
         [Display(Name = "Order Date")]

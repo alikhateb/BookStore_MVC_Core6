@@ -8,12 +8,12 @@ namespace BookStore.Models
     {
         public int Id { get; set; }
         public int ProductId { get; set; }
-        public Product? Product { get; set; }
+        public virtual Product? Product { get; set; }
 
         [Required]
         [StringLength(450)]
         public string? AppUserId { get; set; }
-        public AppUser? AppUser { get; set; }
+        public virtual AppUser? AppUser { get; set; }
 
         [Range(1, 1000, ErrorMessage = "orders should be not less than 1 and grater than 1000")]
         public int Count { get; set; }

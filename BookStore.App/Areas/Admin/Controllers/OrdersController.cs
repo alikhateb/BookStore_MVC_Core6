@@ -86,7 +86,8 @@ namespace BookStore.App.Areas.Admin.Controllers
             OrderVM = new()
             {
                 Order = _unitOfWork.Order.FindObject(order => order.Id == orderId),
-                OrderDetails = _unitOfWork.OrderDetail.GetAll(o => o.OrderId == orderId, x => x.Product).ToList(),
+                //OrderDetails = _unitOfWork.OrderDetail.GetAll(o => o.OrderId == orderId, x => x.Product).ToList(),
+                OrderDetails = _unitOfWork.OrderDetail.GetAll(o => o.OrderId == orderId).ToList(),
             };
 
             OrderVM.ListItems = _unitOfWork.ShippingCompany.GetAll().Select(s => new SelectListItem
