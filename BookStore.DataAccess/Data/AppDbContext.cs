@@ -15,36 +15,36 @@ namespace BookStore.DataAccess.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Product>(obj =>
+            modelBuilder.Entity<Product>(entity =>
             {
-                obj.Property(x => x.ImageUrl).HasMaxLength(150);
-                obj.Property(x => x.Price).HasColumnType("decimal(5, 2)");
-                obj.Property(x => x.Price50).HasColumnType("decimal(5, 2)");
-                obj.Property(x => x.Price100).HasColumnType("decimal(5, 2)");
-                obj.HasOne(x => x.Category).WithMany().HasForeignKey(x => x.CategoryId).OnDelete(DeleteBehavior.Restrict);
-                obj.HasOne(x => x.CoverType).WithMany().HasForeignKey(x => x.CoverTypeId).OnDelete(DeleteBehavior.Restrict);
+                entity.Property(x => x.ImageUrl).HasMaxLength(150);
+                entity.Property(x => x.Price).HasColumnType("decimal(5, 2)");
+                entity.Property(x => x.Price50).HasColumnType("decimal(5, 2)");
+                entity.Property(x => x.Price100).HasColumnType("decimal(5, 2)");
+                entity.HasOne(x => x.Category).WithMany().HasForeignKey(x => x.CategoryId).OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(x => x.CoverType).WithMany().HasForeignKey(x => x.CoverTypeId).OnDelete(DeleteBehavior.Restrict);
             });
 
-            modelBuilder.Entity<AppUser>(obj =>
+            modelBuilder.Entity<AppUser>(entity =>
             {
-                obj.HasOne(x => x.Company).WithMany().HasForeignKey(x => x.CompanyId).OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(x => x.Company).WithMany().HasForeignKey(x => x.CompanyId).OnDelete(DeleteBehavior.Restrict);
             });
 
-            modelBuilder.Entity<ShoppingCartItem>(obj =>
+            modelBuilder.Entity<ShoppingCartItem>(entity =>
             {
-                obj.HasOne(x => x.Product).WithMany().HasForeignKey(x => x.ProductId);
-                obj.HasOne(x => x.AppUser).WithMany().HasForeignKey(x => x.AppUserId);
+                entity.HasOne(x => x.Product).WithMany().HasForeignKey(x => x.ProductId);
+                entity.HasOne(x => x.AppUser).WithMany().HasForeignKey(x => x.AppUserId);
             });
 
-            modelBuilder.Entity<Order>(obj =>
+            modelBuilder.Entity<Order>(entity =>
             {
-                obj.HasOne(x => x.AppUser).WithMany().HasForeignKey(x => x.AppUserId);
+                entity.HasOne(x => x.AppUser).WithMany().HasForeignKey(x => x.AppUserId);
             });
 
-            modelBuilder.Entity<OrderDetail>(obj =>
+            modelBuilder.Entity<OrderDetail>(entity =>
             {
-                obj.HasOne(x => x.Order).WithMany().HasForeignKey(x => x.OrderId);
-                obj.HasOne(x => x.Product).WithMany().HasForeignKey(x => x.ProductId);
+                entity.HasOne(x => x.Order).WithMany().HasForeignKey(x => x.OrderId);
+                entity.HasOne(x => x.Product).WithMany().HasForeignKey(x => x.ProductId);
             });
         }
 
