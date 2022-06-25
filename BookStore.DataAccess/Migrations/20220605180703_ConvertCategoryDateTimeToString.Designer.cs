@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BookStore.DataAccess.Migrations
 {
-    [DbContext(typeof(AppDbContext))]
+    [DbContext(typeof(ApplicationDbContext))]
     [Migration("20220605180703_ConvertCategoryDateTimeToString")]
     partial class ConvertCategoryDateTimeToString
     {

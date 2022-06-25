@@ -1,8 +1,4 @@
-﻿using BookStore.Models.ApplicationUser;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace BookStore.Models
+﻿namespace BookStore.Models
 {
     public class ShoppingCartItem
     {

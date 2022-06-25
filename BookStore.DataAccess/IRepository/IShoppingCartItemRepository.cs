@@ -1,6 +1,4 @@
-﻿using BookStore.Models;
-
-namespace BookStore.DataAccess.IRepository
+﻿namespace BookStore.DataAccess.IRepository
 {
     public interface IShoppingCartItemRepository : IBaseRepository<ShoppingCartItem>
     {

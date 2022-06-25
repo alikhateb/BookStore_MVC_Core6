@@ -1,11 +1,3 @@
-using BookStore.DataAccess.Data;
-using BookStore.DataAccess.DbInitializer;
-using BookStore.DataAccess.UnitOfWork;
-using BookStore.Models.ApplicationUser;
-using BookStore.Utility;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.EntityFrameworkCore;
 using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,14 +8,16 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
 //register Db options 
-builder.Services.AddDbContext<AppDbContext>(options =>
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("cs"));
+    options.UseLazyLoadingProxies()
+           .UseSqlServer(builder.Configuration.GetConnectionString("cs"))
+           .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 });
 
 //register UserManager<IdentityUser> == repository for IdentityUser class - RoleManager<IdentityRole> - SignInManager<IdentityUser> 
 builder.Services.AddIdentity<AppUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
-                .AddEntityFrameworkStores<AppDbContext>()    //add UserStore class - RoleStore class that interact with database 
+                .AddEntityFrameworkStores<ApplicationDbContext>()    //add UserStore class - RoleStore class that interact with database 
                 .AddDefaultTokenProviders()
                 .AddDefaultUI();
 

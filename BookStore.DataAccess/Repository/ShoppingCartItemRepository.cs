@@ -1,14 +1,10 @@
-﻿using BookStore.DataAccess.Data;
-using BookStore.DataAccess.IRepository;
-using BookStore.Models;
-
-namespace BookStore.DataAccess.Repository
+﻿namespace BookStore.DataAccess.Repository
 {
     public class ShoppingCartItemRepository : BaseRepository<ShoppingCartItem>, IShoppingCartItemRepository
     {
-        private readonly AppDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public ShoppingCartItemRepository(AppDbContext context) : base(context)
+        public ShoppingCartItemRepository(ApplicationDbContext context) : base(context)
         {
             _context = context;
         }

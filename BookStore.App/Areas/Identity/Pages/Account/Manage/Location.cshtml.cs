@@ -1,6 +1,3 @@
-using BookStore.Models.ApplicationUser;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 
@@ -40,7 +37,7 @@ namespace BookStore.App.Areas.Identity.Pages.Account.Manage
             public string? PostalCode { get; set; }
         }
 
-        private void Load (AppUser user)
+        private void Load(AppUser user)
         {
 
             Input = new InputModel

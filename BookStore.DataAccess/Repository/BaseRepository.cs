@@ -1,47 +1,42 @@
-﻿using BookStore.DataAccess.Data;
-using BookStore.DataAccess.IRepository;
-using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
-
-namespace BookStore.DataAccess.Repository
+﻿namespace BookStore.DataAccess.Repository
 {
     public class BaseRepository<T> : IBaseRepository<T> where T : class
     {
-        private readonly AppDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public BaseRepository(AppDbContext context)
+        public BaseRepository(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public IEnumerable<T> GetAll()
+        public IQueryable<T> GetAll()
         {
-            return _context.Set<T>().ToList();
+            return _context.Set<T>();
         }
 
-        public IEnumerable<T> GetAll(Expression<Func<T, bool>> filter)
+        public IQueryable<T> GetAll(Expression<Func<T, bool>> filter)
         {
-            return _context.Set<T>().Where(filter).ToList();
+            return _context.Set<T>().Where(filter);
         }
 
-        public IEnumerable<T> GetAll(params Expression<Func<T, object>>[] navigationProperties)
+        public IQueryable<T> GetAll(params Expression<Func<T, object>>[] navigationProperties)
         {
             IQueryable<T> query = _context.Set<T>();
             foreach (var navigationProperty in navigationProperties)
             {
                 query = query.Include(navigationProperty);
             }
-            return query.ToList();
+            return query;
         }
 
-        public IEnumerable<T> GetAll(Expression<Func<T, bool>> filter, params Expression<Func<T, object>>[] navigationProperties)
+        public IQueryable<T> GetAll(Expression<Func<T, bool>> filter, params Expression<Func<T, object>>[] navigationProperties)
         {
             IQueryable<T> query = _context.Set<T>().Where(filter);
             foreach (var navigationProperty in navigationProperties)
             {
                 query = query.Include(navigationProperty);
             }
-            return query.ToList();
+            return query;
         }
 
         public T FindObject(Expression<Func<T, bool>> filter)

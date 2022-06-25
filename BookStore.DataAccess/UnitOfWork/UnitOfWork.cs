@@ -1,15 +1,10 @@
-﻿using BookStore.DataAccess.Data;
-using BookStore.DataAccess.IRepository;
-using BookStore.DataAccess.Repository;
-using BookStore.Models;
-
-namespace BookStore.DataAccess.UnitOfWork
+﻿namespace BookStore.DataAccess.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly AppDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public UnitOfWork(AppDbContext context)
+        public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
             Category = new BaseRepository<Category>(_context);
@@ -31,7 +26,7 @@ namespace BookStore.DataAccess.UnitOfWork
         public IOrderRepository Order { get; private set; }
         public IBaseRepository<ShippingCompany> ShippingCompany { get; private set; }
 
-        public void Save()
+        public void SaveChanges()
         {
             _context.SaveChanges();
         }

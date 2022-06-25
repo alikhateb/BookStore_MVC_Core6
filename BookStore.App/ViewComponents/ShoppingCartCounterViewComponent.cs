@@ -1,9 +1,4 @@
-﻿using BookStore.DataAccess.UnitOfWork;
-using BookStore.Utility;
-using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-
-namespace BookStore.App.ViewComponents
+﻿namespace BookStore.App.ViewComponents
 {
     public class ShoppingCartCounterViewComponent : ViewComponent
     {

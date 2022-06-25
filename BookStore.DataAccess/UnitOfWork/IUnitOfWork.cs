@@ -1,7 +1,4 @@
-﻿using BookStore.DataAccess.IRepository;
-using BookStore.Models;
-
-namespace BookStore.DataAccess.UnitOfWork
+﻿namespace BookStore.DataAccess.UnitOfWork
 {
     public interface IUnitOfWork : IDisposable
     {
@@ -13,6 +10,6 @@ namespace BookStore.DataAccess.UnitOfWork
         IBaseRepository<OrderDetail> OrderDetail { get; }
         IOrderRepository Order { get; }
         IBaseRepository<ShippingCompany> ShippingCompany { get; }
-        void Save();
+        void SaveChanges();
     }
 }

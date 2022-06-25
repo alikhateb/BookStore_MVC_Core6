@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-
-namespace BookStore.Models.ViewModels
+﻿namespace BookStore.Models.ViewModels
 {
     public class OrderVM
     {

@@ -1,7 +1,4 @@
-﻿using BookStore.Models;
-using System.Linq.Expressions;
-
-namespace BookStore.DataAccess.IRepository
+﻿namespace BookStore.DataAccess.IRepository
 {
     public interface IOrderRepository : IBaseRepository<Order>
     {

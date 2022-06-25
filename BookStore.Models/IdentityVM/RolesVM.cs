@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace BookStore.Models.IdentityVM
+﻿namespace BookStore.Models.IdentityVM
 {
     public class RolesVM
     {

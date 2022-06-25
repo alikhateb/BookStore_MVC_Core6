@@ -1,15 +1,10 @@
-﻿using BookStore.DataAccess.Data;
-using BookStore.DataAccess.IRepository;
-using BookStore.Models;
-using System.Linq.Expressions;
-
-namespace BookStore.DataAccess.Repository
+﻿namespace BookStore.DataAccess.Repository
 {
     public class OrderRepository : BaseRepository<Order>, IOrderRepository
     {
-        private readonly AppDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public OrderRepository(AppDbContext context) : base(context)
+        public OrderRepository(ApplicationDbContext context) : base(context)
         {
             _context = context;
         }

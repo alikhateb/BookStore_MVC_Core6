@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace BookStore.Models
+﻿namespace BookStore.Models
 {
     public class Company
     {

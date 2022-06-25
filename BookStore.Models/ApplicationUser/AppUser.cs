@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
-
-namespace BookStore.Models.ApplicationUser
+﻿namespace BookStore.Models.ApplicationUser
 {
     public class AppUser : IdentityUser
     {

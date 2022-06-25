@@ -1,21 +1,15 @@
-﻿using BookStore.DataAccess.Data;
-using BookStore.Models.ApplicationUser;
-using BookStore.Utility;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-
-namespace BookStore.DataAccess.DbInitializer
+﻿namespace BookStore.DataAccess.DbInitializer
 {
     public class DbInitializer : IDbInitializer
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly AppDbContext _context;
+        private readonly ApplicationDbContext _context;
 
         public DbInitializer(
             RoleManager<IdentityRole> roleManager,
             UserManager<AppUser> userManager,
-            AppDbContext context)
+            ApplicationDbContext context)
         {
             _context = context;
             _roleManager = roleManager;

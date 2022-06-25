@@ -1,12 +1,4 @@
-﻿using BookStore.DataAccess.UnitOfWork;
-using BookStore.Models.ViewModels;
-using BookStore.Utility;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Stripe;
-using Stripe.Checkout;
-using System.Security.Claims;
+﻿using Stripe;
 
 namespace BookStore.App.Areas.Admin.Controllers
 {
@@ -130,7 +122,7 @@ namespace BookStore.App.Areas.Admin.Controllers
             }
 
             _unitOfWork.Order.Update(order);
-            _unitOfWork.Save();
+            _unitOfWork.SaveChanges();
             return RedirectToAction(nameof(Details), new { orderId = order.Id });
         }
 
@@ -140,7 +132,7 @@ namespace BookStore.App.Areas.Admin.Controllers
         public IActionResult StartProcessing()
         {
             _unitOfWork.Order.UpdateStatus(OrderVM.Order.Id, StaticDetails.StatusInProcess, null);
-            _unitOfWork.Save();
+            _unitOfWork.SaveChanges();
             return RedirectToAction(nameof(Details), new { orderId = OrderVM.Order.Id });
         }
 
@@ -162,7 +154,7 @@ namespace BookStore.App.Areas.Admin.Controllers
             }
 
             _unitOfWork.Order.Update(order);
-            _unitOfWork.Save();
+            _unitOfWork.SaveChanges();
             return RedirectToAction(nameof(Details), new { orderId = OrderVM.Order.Id });
         }
 
@@ -192,7 +184,7 @@ namespace BookStore.App.Areas.Admin.Controllers
             }
 
             _unitOfWork.Order.Update(order);
-            _unitOfWork.Save();
+            _unitOfWork.SaveChanges();
             return RedirectToAction(nameof(Details), new { orderId = OrderVM.Order.Id });
         }
 
@@ -237,7 +229,7 @@ namespace BookStore.App.Areas.Admin.Controllers
             Session session = service.Create(options);
 
             _unitOfWork.Order.UpdateStripePaymentId(OrderVM.Order.Id, session.Id, session.PaymentIntentId);
-            _unitOfWork.Save();
+            _unitOfWork.SaveChanges();
 
             Response.Headers.Add("Location", session.Url);
             return new StatusCodeResult(303);
@@ -257,7 +249,7 @@ namespace BookStore.App.Areas.Admin.Controllers
                 {
                     order.PaymentDate = DateTime.Now.ToString("dd/MM/yyyy hh:mm tt");
                     _unitOfWork.Order.UpdateStatus(orderId, order.OrderStatus, StaticDetails.PaymentStatusApproved);
-                    _unitOfWork.Save();
+                    _unitOfWork.SaveChanges();
                 }
             }
 

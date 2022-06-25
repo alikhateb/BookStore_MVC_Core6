@@ -1,13 +1,9 @@
-﻿using BookStore.Models;
-using BookStore.Models.ApplicationUser;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-
-namespace BookStore.DataAccess.Data
+﻿namespace BookStore.DataAccess.Data
 {
-    public class AppDbContext : IdentityDbContext<AppUser>
+    public class ApplicationDbContext : IdentityDbContext<AppUser>
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            : base(options)
         {
         }
 

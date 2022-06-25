@@ -1,10 +1,4 @@
-﻿using BookStore.DataAccess.UnitOfWork;
-using BookStore.Models;
-using BookStore.Utility;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-
-namespace BookStore.App.Areas.Admin.Controllers
+﻿namespace BookStore.App.Areas.Admin.Controllers
 {
     [Area("admin")]
     [Authorize(Roles = $"{StaticDetails.Role_Admin}, {StaticDetails.Role_Employee}")]
@@ -59,7 +53,7 @@ namespace BookStore.App.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Upsert([FromForm] Company model)
         {
-             if (!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View(model);
             }
@@ -72,7 +66,7 @@ namespace BookStore.App.Areas.Admin.Controllers
             {
                 _unitOfWork.Company.Update(model);
             }
-            _unitOfWork.Save();
+            _unitOfWork.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
 
@@ -86,7 +80,7 @@ namespace BookStore.App.Areas.Admin.Controllers
                     return NotFound("invalid id");
                 }
                 _unitOfWork.Company.Remove(company);
-                _unitOfWork.Save();
+                _unitOfWork.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
             catch

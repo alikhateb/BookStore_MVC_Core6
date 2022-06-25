@@ -1,11 +1,4 @@
-﻿using BookStore.DataAccess.UnitOfWork;
-using BookStore.Models;
-using BookStore.Models.ViewModels;
-using BookStore.Utility;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-
-namespace BookStore.App.Areas.Admin.Controllers
+﻿namespace BookStore.App.Areas.Admin.Controllers
 {
     [Area("admin")]
     [Authorize(Roles = $"{StaticDetails.Role_Admin}, {StaticDetails.Role_Employee}")]
@@ -127,7 +120,7 @@ namespace BookStore.App.Areas.Admin.Controllers
             {
                 _unitOfWork.Product.Update(model.Product);
             }
-            _unitOfWork.Save();
+            _unitOfWork.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
 
@@ -150,7 +143,7 @@ namespace BookStore.App.Areas.Admin.Controllers
                     }
                 }
                 _unitOfWork.Product.Remove(product);
-                _unitOfWork.Save();
+                _unitOfWork.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
             catch

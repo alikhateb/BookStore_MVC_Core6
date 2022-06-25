@@ -1,12 +1,4 @@
-﻿using BookStore.DataAccess.UnitOfWork;
-using BookStore.Models;
-using BookStore.Utility;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
-using System.Security.Claims;
-
-namespace BookStore.App.Areas.Customer.Controllers
+﻿namespace BookStore.App.Areas.Customer.Controllers
 {
     [Area("customer")]
     public class HomeController : Controller
@@ -82,7 +74,7 @@ namespace BookStore.App.Areas.Customer.Controllers
                 _unitOfWork.ShoppingCartItem.Update(existingShoppingCart);
             }
 
-            _unitOfWork.Save();
+            _unitOfWork.SaveChanges();
 
             HttpContext.Session.SetInt32(StaticDetails.SessionCart,
                 _unitOfWork.ShoppingCartItem.GetAll(s => s.AppUserId == claim.Value).Count());

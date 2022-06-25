@@ -1,15 +1,4 @@
-﻿using BookStore.DataAccess.UnitOfWork;
-using BookStore.Models;
-using BookStore.Models.ApplicationUser;
-using BookStore.Models.ViewModels;
-using BookStore.Utility;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.AspNetCore.Mvc;
-using Stripe.Checkout;
-
-namespace BookStore.App.Areas.Customer.Controllers
+﻿namespace BookStore.App.Areas.Customer.Controllers
 {
     [Area("Customer")]
     [Authorize]
@@ -99,7 +88,7 @@ namespace BookStore.App.Areas.Customer.Controllers
                 }
 
                 _unitOfWork.Order.Add(ShoppingCartVm.Order);
-                _unitOfWork.Save();
+                _unitOfWork.SaveChanges();
 
                 IEnumerable<OrderDetail> orderDetailList = ShoppingCartVm.CartItems.Select(o => new OrderDetail
                 {
@@ -110,7 +99,7 @@ namespace BookStore.App.Areas.Customer.Controllers
                 });
 
                 _unitOfWork.OrderDetail.AddRange(orderDetailList);
-                _unitOfWork.Save();
+                _unitOfWork.SaveChanges();
 
                 if (AppUser.CompanyId.GetValueOrDefault() == 0)  //for individual users
                 {
@@ -149,7 +138,7 @@ namespace BookStore.App.Areas.Customer.Controllers
                     Session session = service.Create(options);
 
                     _unitOfWork.Order.UpdateStripePaymentId(ShoppingCartVm.Order.Id, session.Id, session.PaymentIntentId);
-                    _unitOfWork.Save();
+                    _unitOfWork.SaveChanges();
 
                     Response.Headers.Add("Location", session.Url);
                     return new StatusCodeResult(303);
@@ -164,7 +153,7 @@ namespace BookStore.App.Areas.Customer.Controllers
             {
                 IEnumerable<OrderDetail> existstingOrderDetailList = _unitOfWork.OrderDetail.GetAll(o => o.OrderId == order.Id);
                 _unitOfWork.OrderDetail.RemoveRange(existstingOrderDetailList);
-                _unitOfWork.Save();
+                _unitOfWork.SaveChanges();
 
                 IEnumerable<OrderDetail> orderDetailList = ShoppingCartVm.CartItems.Select(o => new OrderDetail
                 {
@@ -175,7 +164,7 @@ namespace BookStore.App.Areas.Customer.Controllers
                 });
 
                 _unitOfWork.OrderDetail.AddRange(orderDetailList);
-                _unitOfWork.Save();
+                _unitOfWork.SaveChanges();
 
                 if (AppUser.CompanyId.GetValueOrDefault() == 0)  //for individual users
                 {
@@ -214,7 +203,7 @@ namespace BookStore.App.Areas.Customer.Controllers
                     Session session = service.Create(options);
 
                     _unitOfWork.Order.UpdateStripePaymentId(order.Id, session.Id, session.PaymentIntentId);
-                    _unitOfWork.Save();
+                    _unitOfWork.SaveChanges();
 
                     Response.Headers.Add("Location", session.Url);
                     return new StatusCodeResult(303);
@@ -238,7 +227,7 @@ namespace BookStore.App.Areas.Customer.Controllers
                 {
                     order.PaymentDate = DateTime.Now.ToString("dd/MM/yyyy hh:mm tt");
                     _unitOfWork.Order.UpdateStatus(id, StaticDetails.StatusApproved, StaticDetails.PaymentStatusApproved);
-                    _unitOfWork.Save();
+                    _unitOfWork.SaveChanges();
                 }
             }
 
@@ -246,7 +235,7 @@ namespace BookStore.App.Areas.Customer.Controllers
 
             IEnumerable<ShoppingCartItem> shoppingCartItems = _unitOfWork.ShoppingCartItem.GetAll(x => x.AppUserId == order.AppUserId);
             _unitOfWork.ShoppingCartItem.RemoveRange(shoppingCartItems);
-            _unitOfWork.Save();
+            _unitOfWork.SaveChanges();
 
             HttpContext.Session.Clear();
 
@@ -258,7 +247,7 @@ namespace BookStore.App.Areas.Customer.Controllers
             var cartItem = _unitOfWork.ShoppingCartItem.FindObject(x => x.Id == itemId);
             _unitOfWork.ShoppingCartItem.IncrementCount(cartItem, 1);
             _unitOfWork.ShoppingCartItem.Update(cartItem);
-            _unitOfWork.Save();
+            _unitOfWork.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
 
@@ -267,7 +256,7 @@ namespace BookStore.App.Areas.Customer.Controllers
             var cartItem = _unitOfWork.ShoppingCartItem.FindObject(x => x.Id == itemId);
             _unitOfWork.ShoppingCartItem.DecrementCount(cartItem, 1);
             _unitOfWork.ShoppingCartItem.Update(cartItem);
-            _unitOfWork.Save();
+            _unitOfWork.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
 
@@ -275,7 +264,7 @@ namespace BookStore.App.Areas.Customer.Controllers
         {
             var cartItem = _unitOfWork.ShoppingCartItem.FindObject(x => x.Id == itemId);
             _unitOfWork.ShoppingCartItem.Remove(cartItem);
-            _unitOfWork.Save();
+            _unitOfWork.SaveChanges();
 
             HttpContext.Session.SetInt32(StaticDetails.SessionCart,
                 _unitOfWork.ShoppingCartItem.GetAll(s => s.AppUserId == cartItem.AppUserId).Count());

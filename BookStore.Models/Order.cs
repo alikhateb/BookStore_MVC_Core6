@@ -1,7 +1,4 @@
-﻿using BookStore.Models.ApplicationUser;
-using System.ComponentModel.DataAnnotations;
-
-namespace BookStore.Models
+﻿namespace BookStore.Models
 {
     public class Order
     {

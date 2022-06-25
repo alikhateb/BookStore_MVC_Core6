@@ -1,12 +1,4 @@
-﻿using BookStore.Models.ApplicationUser;
-using BookStore.Models.IdentityVM;
-using BookStore.Utility;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-
-namespace BookStore.App.Areas.Admin.Controllers
+﻿namespace BookStore.App.Areas.Admin.Controllers
 {
     [Area("admin")]
     [Authorize(Roles = StaticDetails.Role_Admin)]

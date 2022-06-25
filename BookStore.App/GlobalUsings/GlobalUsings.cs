@@ -1,0 +1,17 @@
+﻿global using BookStore.DataAccess.Data;
+global using BookStore.DataAccess.DbInitializer;
+global using BookStore.DataAccess.UnitOfWork;
+global using BookStore.Models;
+global using BookStore.Models.ApplicationUser;
+global using BookStore.Models.IdentityVM;
+global using BookStore.Models.ViewModels;
+global using BookStore.Utility;
+global using Microsoft.AspNetCore.Authorization;
+global using Microsoft.AspNetCore.Identity;
+global using Microsoft.AspNetCore.Identity.UI.Services;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.AspNetCore.Mvc.Rendering;
+global using Microsoft.EntityFrameworkCore;
+global using Stripe.Checkout;
+global using System.Diagnostics;
+global using System.Security.Claims;
