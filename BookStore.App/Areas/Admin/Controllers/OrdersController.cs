@@ -30,7 +30,7 @@ namespace BookStore.App.Areas.Admin.Controllers
 
             if (User.IsInRole(StaticDetails.Role_Admin) || User.IsInRole(StaticDetails.Role_Employee))
             {
-                orders = _unitOfWork.Order.GetAll().OrderBy(x => x.Id).ToList();
+                orders = _unitOfWork.Order.GetAll().AsTracking().OrderBy(x => x.Id).ToList();
 
                 if (orders is null)
                 {

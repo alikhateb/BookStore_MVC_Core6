@@ -24,7 +24,7 @@
         public IActionResult GetAll()
         {
             //var products = _unitOfWork.Product.GetAll(x => x.Category, p => p.CoverType).OrderBy(x => x.Title);
-            var products = _unitOfWork.Product.GetAll().OrderBy(x => x.Title);
+            var products = _unitOfWork.Product.GetAll().AsTracking().OrderBy(x => x.Title).ToList();
             if (products is null)
             {
                 return NotFound("no data found");
