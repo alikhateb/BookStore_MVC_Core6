@@ -12,7 +12,11 @@
         public ShoppingCartVm ShoppingCartVm { get; set; }
         public AppUser AppUser { get; set; }
 
+#pragma warning disable CS8618 // Non-nullable property 'AppUser' must contain a non-null value when exiting constructor. Consider declaring the property as nullable.
+#pragma warning disable CS8618 // Non-nullable property 'ShoppingCartVm' must contain a non-null value when exiting constructor. Consider declaring the property as nullable.
         public CartController(IUnitOfWork _unitOfWork, UserManager<AppUser> _userManager, IEmailSender _emailSender)
+#pragma warning restore CS8618 // Non-nullable property 'ShoppingCartVm' must contain a non-null value when exiting constructor. Consider declaring the property as nullable.
+#pragma warning restore CS8618 // Non-nullable property 'AppUser' must contain a non-null value when exiting constructor. Consider declaring the property as nullable.
         {
             this._unitOfWork = _unitOfWork;
             this._userManager = _userManager;
@@ -32,12 +36,16 @@
 
             ShoppingCartVm = LoadCartItems(AppUser);
 
+#pragma warning disable CS8604 // Possible null reference argument for parameter 'source' in 'bool Enumerable.Any<ShoppingCartItem>(IEnumerable<ShoppingCartItem> source)'.
             if (!ShoppingCartVm.CartItems.Any())
             {
                 return RedirectToAction("index", "home");
             }
+#pragma warning restore CS8604 // Possible null reference argument for parameter 'source' in 'bool Enumerable.Any<ShoppingCartItem>(IEnumerable<ShoppingCartItem> source)'.
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             ShoppingCartVm.Order.AppUserId = AppUser.Id;
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
             ShoppingCartVm.Order.Username = AppUser.UserName;
             ShoppingCartVm.Order.Email = AppUser.Email;
             ShoppingCartVm.Order.Address = AppUser.Address;
@@ -61,8 +69,12 @@
 
             foreach (var item in ShoppingCartVm.CartItems)
             {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                 item.Price = GetPriceBasedOnQuality(item.Count, item.Product.Price, item.Product.Price50, item.Product.Price100);
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                 ShoppingCartVm.Order.TotalPrice += item.Price * item.Count;
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
             }
 
             if (!ModelState.IsValid)
@@ -78,12 +90,16 @@
             {
                 if (AppUser.CompanyId.GetValueOrDefault() == 0)  //for individual users
                 {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                     ShoppingCartVm.Order.OrderStatus = StaticDetails.StatusPending;
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
                     ShoppingCartVm.Order.PaymentStatus = StaticDetails.PaymentStatusPending;
                 }
                 else  //for company users
                 {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                     ShoppingCartVm.Order.OrderStatus = StaticDetails.StatusApproved;
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
                     ShoppingCartVm.Order.PaymentStatus = StaticDetails.PaymentStatusDelayedPayment;
                 }
 
@@ -118,6 +134,7 @@
 
                     foreach (var item in ShoppingCartVm.CartItems)
                     {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                         var sessionLineItem = new SessionLineItemOptions
                         {
                             PriceData = new SessionLineItemPriceDataOptions
@@ -131,6 +148,7 @@
                             },
                             Quantity = item.Count,
                         };
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
                         options.LineItems.Add(sessionLineItem);
                     }
 
@@ -183,6 +201,7 @@
 
                     foreach (var item in ShoppingCartVm.CartItems)
                     {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                         var sessionLineItem = new SessionLineItemOptions
                         {
                             PriceData = new SessionLineItemPriceDataOptions
@@ -196,6 +215,7 @@
                             },
                             Quantity = item.Count,
                         };
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
                         options.LineItems.Add(sessionLineItem);
                     }
 
@@ -283,7 +303,9 @@
 
             foreach (var item in ShoppingCartVm.CartItems)
             {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                 item.Price = GetPriceBasedOnQuality(item.Count, item.Product.Price, item.Product.Price50, item.Product.Price100);
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
                 ShoppingCartVm.Order.TotalPrice += item.Price * item.Count;
             }
 

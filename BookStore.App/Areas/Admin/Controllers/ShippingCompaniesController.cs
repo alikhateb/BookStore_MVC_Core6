@@ -9,7 +9,9 @@
         [BindProperty]
         public ShippingCompany ShippingCompany { get; set; }
 
+#pragma warning disable CS8618 // Non-nullable property 'ShippingCompany' must contain a non-null value when exiting constructor. Consider declaring the property as nullable.
         public ShippingCompaniesController(IUnitOfWork _unitOfWork)
+#pragma warning restore CS8618 // Non-nullable property 'ShippingCompany' must contain a non-null value when exiting constructor. Consider declaring the property as nullable.
         {
             this._unitOfWork = _unitOfWork;
         }

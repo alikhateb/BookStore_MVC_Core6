@@ -2,7 +2,23 @@
 {
     public class ApplicationDbContext : IdentityDbContext<AppUser>
     {
+#pragma warning disable CS8618 // Non-nullable property 'Orders' must contain a non-null value when exiting constructor. Consider declaring the property as nullable.
+#pragma warning disable CS8618 // Non-nullable property 'CoverTypes' must contain a non-null value when exiting constructor. Consider declaring the property as nullable.
+#pragma warning disable CS8618 // Non-nullable property 'Products' must contain a non-null value when exiting constructor. Consider declaring the property as nullable.
+#pragma warning disable CS8618 // Non-nullable property 'ShippingCompanies' must contain a non-null value when exiting constructor. Consider declaring the property as nullable.
+#pragma warning disable CS8618 // Non-nullable property 'Categories' must contain a non-null value when exiting constructor. Consider declaring the property as nullable.
+#pragma warning disable CS8618 // Non-nullable property 'OrderDetails' must contain a non-null value when exiting constructor. Consider declaring the property as nullable.
+#pragma warning disable CS8618 // Non-nullable property 'Companies' must contain a non-null value when exiting constructor. Consider declaring the property as nullable.
+#pragma warning disable CS8618 // Non-nullable property 'ShoppingCartItems' must contain a non-null value when exiting constructor. Consider declaring the property as nullable.
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+#pragma warning restore CS8618 // Non-nullable property 'ShoppingCartItems' must contain a non-null value when exiting constructor. Consider declaring the property as nullable.
+#pragma warning restore CS8618 // Non-nullable property 'Companies' must contain a non-null value when exiting constructor. Consider declaring the property as nullable.
+#pragma warning restore CS8618 // Non-nullable property 'OrderDetails' must contain a non-null value when exiting constructor. Consider declaring the property as nullable.
+#pragma warning restore CS8618 // Non-nullable property 'Categories' must contain a non-null value when exiting constructor. Consider declaring the property as nullable.
+#pragma warning restore CS8618 // Non-nullable property 'ShippingCompanies' must contain a non-null value when exiting constructor. Consider declaring the property as nullable.
+#pragma warning restore CS8618 // Non-nullable property 'Products' must contain a non-null value when exiting constructor. Consider declaring the property as nullable.
+#pragma warning restore CS8618 // Non-nullable property 'CoverTypes' must contain a non-null value when exiting constructor. Consider declaring the property as nullable.
+#pragma warning restore CS8618 // Non-nullable property 'Orders' must contain a non-null value when exiting constructor. Consider declaring the property as nullable.
             : base(options)
         {
         }

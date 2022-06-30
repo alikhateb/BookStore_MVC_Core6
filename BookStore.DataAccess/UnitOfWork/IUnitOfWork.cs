@@ -2,14 +2,14 @@
 {
     public interface IUnitOfWork : IDisposable
     {
-        IBaseRepository<Category> Category { get; }
-        IBaseRepository<CoverType> CoverType { get; }
-        IBaseRepository<Product> Product { get; }
-        IBaseRepository<Company> Company { get; }
+        ICategoryRepository Category { get; }
+        ICoverTypeRepository CoverType { get; }
+        IProductRepository Product { get; }
+        ICompanyRepository Company { get; }
         IShoppingCartItemRepository ShoppingCartItem { get; }
-        IBaseRepository<OrderDetail> OrderDetail { get; }
+        IOrderDetailRepository OrderDetail { get; }
         IOrderRepository Order { get; }
-        IBaseRepository<ShippingCompany> ShippingCompany { get; }
+        IShippingCompanyRepository ShippingCompany { get; }
         void SaveChanges();
     }
 }

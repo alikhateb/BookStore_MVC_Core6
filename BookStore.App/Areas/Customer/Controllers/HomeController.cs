@@ -9,7 +9,9 @@
         [BindProperty]
         public ShoppingCartItem ShoppingCartItem { get; set; }
 
+#pragma warning disable CS8618 // Non-nullable property 'ShoppingCartItem' must contain a non-null value when exiting constructor. Consider declaring the property as nullable.
         public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork)
+#pragma warning restore CS8618 // Non-nullable property 'ShoppingCartItem' must contain a non-null value when exiting constructor. Consider declaring the property as nullable.
         {
             _logger = logger;
             _unitOfWork = unitOfWork;
@@ -17,7 +19,11 @@
 
         public IActionResult Index()
         {
+#pragma warning disable CS8603 // Possible null reference return.
+#pragma warning disable CS8603 // Possible null reference return.
             var products = _unitOfWork.Product.GetAll(x => x.Category, x => x.CoverType).OrderBy(x => x.Title);
+#pragma warning restore CS8603 // Possible null reference return.
+#pragma warning restore CS8603 // Possible null reference return.
             if (products is null)
             {
                 return NotFound("no data found");
@@ -27,12 +33,16 @@
 
         public IActionResult Details(int productId)
         {
+#pragma warning disable CS8603 // Possible null reference return.
+#pragma warning disable CS8603 // Possible null reference return.
             ShoppingCartItem = new()
             {
                 Product = _unitOfWork.Product.FindObject(x => x.Id == productId, x => x.Category, x => x.CoverType),
                 ProductId = productId,
                 Count = 1
             };
+#pragma warning restore CS8603 // Possible null reference return.
+#pragma warning restore CS8603 // Possible null reference return.
 
             if (ShoppingCartItem.Product is null)
             {
@@ -48,9 +58,13 @@
         public IActionResult Details()
         {
             var claimsIdentity = User.Identity as ClaimsIdentity;
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             ShoppingCartItem.AppUserId = claim.Value;
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
             if (ShoppingCartItem.Count > 1000)
             {

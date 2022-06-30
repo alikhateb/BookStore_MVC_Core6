@@ -11,7 +11,9 @@ namespace BookStore.App.Areas.Admin.Controllers
         [BindProperty]
         public OrderVM OrderVM { get; set; }
 
+#pragma warning disable CS8618 // Non-nullable property 'OrderVM' must contain a non-null value when exiting constructor. Consider declaring the property as nullable.
         public OrdersController(IUnitOfWork _unitOfWork)
+#pragma warning restore CS8618 // Non-nullable property 'OrderVM' must contain a non-null value when exiting constructor. Consider declaring the property as nullable.
         {
             this._unitOfWork = _unitOfWork;
         }
@@ -26,11 +28,11 @@ namespace BookStore.App.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult GetAll(string status)
         {
-            List<Models.Order> orders;
+            List<Models.Models.Order> orders;
 
             if (User.IsInRole(StaticDetails.Role_Admin) || User.IsInRole(StaticDetails.Role_Employee))
             {
-                orders = _unitOfWork.Order.GetAll().AsTracking().OrderBy(x => x.Id).ToList();
+                orders = _unitOfWork.Order.GetAll().OrderBy(x => x.Id).ToList();
 
                 if (orders is null)
                 {
@@ -58,9 +60,13 @@ namespace BookStore.App.Areas.Admin.Controllers
             else
             {
                 var claimsIdentity = User.Identity as ClaimsIdentity;
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                 var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                 orders = _unitOfWork.Order.GetAll(o => o.AppUserId == claim.Value).OrderBy(x => x.Id).ToList();
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
                 if (orders is null)
                 {
@@ -102,9 +108,13 @@ namespace BookStore.App.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult UpdateOrderDetails()
         {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             var order = _unitOfWork.Order.FindObject(o => o.Id == OrderVM.Order.Id);
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             order.Username = OrderVM.Order.Username;
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
             order.PhoneNumber = OrderVM.Order.PhoneNumber;
             order.Address = OrderVM.Order.Address;
             order.City = OrderVM.Order.City;
@@ -131,7 +141,11 @@ namespace BookStore.App.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult StartProcessing()
         {
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             _unitOfWork.Order.UpdateStatus(OrderVM.Order.Id, StaticDetails.StatusInProcess, null);
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
             _unitOfWork.SaveChanges();
             return RedirectToAction(nameof(Details), new { orderId = OrderVM.Order.Id });
         }
@@ -141,9 +155,13 @@ namespace BookStore.App.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult ShipOrder()
         {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             var order = _unitOfWork.Order.FindObject(o => o.Id == OrderVM.Order.Id);
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             order.TrackingNumber = OrderVM.Order.TrackingNumber;
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
             order.Carrier = OrderVM.Order.Carrier;
             order.OrderStatus = StaticDetails.StatusShipped;
             order.ShippingDate = DateTime.Now.ToString("dd/MM/yyyy hh:mm tt");
@@ -163,7 +181,9 @@ namespace BookStore.App.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult CancelOrder()
         {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             var order = _unitOfWork.Order.FindObject(o => o.Id == OrderVM.Order.Id);
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
             if (order.PaymentStatus == StaticDetails.PaymentStatusApproved)  //individual user
             {
@@ -185,16 +205,21 @@ namespace BookStore.App.Areas.Admin.Controllers
 
             _unitOfWork.Order.Update(order);
             _unitOfWork.SaveChanges();
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             return RedirectToAction(nameof(Details), new { orderId = OrderVM.Order.Id });
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult PayNow()
         {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             OrderVM.OrderDetails = _unitOfWork.OrderDetail.GetAll(o => o.OrderId == OrderVM.Order.Id, x => x.Product).ToList();
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
             //stripe settings
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             var options = new SessionCreateOptions
             {
                 PaymentMethodTypes = new List<string>
@@ -206,9 +231,11 @@ namespace BookStore.App.Areas.Admin.Controllers
                 SuccessUrl = $"https://localhost:7199/admin/orders/PaymentConfirmation?orderId={OrderVM.Order.Id}",
                 CancelUrl = $"https://localhost:7199/admin/orders/Details?orderId={OrderVM.Order.Id}",
             };
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
             foreach (var item in OrderVM.OrderDetails)
             {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                 var sessionLineItem = new SessionLineItemOptions
                 {
                     PriceData = new SessionLineItemPriceDataOptions
@@ -222,6 +249,7 @@ namespace BookStore.App.Areas.Admin.Controllers
                     },
                     Quantity = item.Count,
                 };
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
                 options.LineItems.Add(sessionLineItem);
             }
 
@@ -248,7 +276,9 @@ namespace BookStore.App.Areas.Admin.Controllers
                 if (session.PaymentStatus.ToLower() == "paid")
                 {
                     order.PaymentDate = DateTime.Now.ToString("dd/MM/yyyy hh:mm tt");
+#pragma warning disable CS8604 // Possible null reference argument for parameter 'orderStatus' in 'void IOrderRepository.UpdateStatus(int id, string orderStatus, string paymentStatus)'.
                     _unitOfWork.Order.UpdateStatus(orderId, order.OrderStatus, StaticDetails.PaymentStatusApproved);
+#pragma warning restore CS8604 // Possible null reference argument for parameter 'orderStatus' in 'void IOrderRepository.UpdateStatus(int id, string orderStatus, string paymentStatus)'.
                     _unitOfWork.SaveChanges();
                 }
             }

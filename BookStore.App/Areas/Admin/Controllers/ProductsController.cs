@@ -24,7 +24,7 @@
         public IActionResult GetAll()
         {
             //var products = _unitOfWork.Product.GetAll(x => x.Category, p => p.CoverType).OrderBy(x => x.Title);
-            var products = _unitOfWork.Product.GetAll().AsTracking().OrderBy(x => x.Title).ToList();
+            var products = _unitOfWork.Product.GetAll().OrderBy(x => x.Title).ToList();
             if (products is null)
             {
                 return NotFound("no data found");
@@ -91,6 +91,7 @@
 
                 string wwwRootPath = _webHostEnvironment.WebRootPath;
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
                 if (model.Product.ImageUrl is not null)
                 {
                     var oldImagePath = Path.Combine(wwwRootPath, model.Product.ImageUrl.TrimStart('\\'));
@@ -99,6 +100,7 @@
                         System.IO.File.Delete(oldImagePath);
                     }
                 }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
                 //string uploadPath = Path.Combine(wwwRootPath, @"assets\products");
                 string uploadPath = $@"{wwwRootPath}\assets\products";
@@ -112,6 +114,7 @@
                 model.Product.ImageUrl = $@"\assets\products\{fileName}_{file.FileName}";
             }
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             if (model.Product.Id == 0)
             {
                 _unitOfWork.Product.Add(model.Product);
@@ -120,6 +123,7 @@
             {
                 _unitOfWork.Product.Update(model.Product);
             }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
             _unitOfWork.SaveChanges();
             return RedirectToAction(nameof(Index));
         }

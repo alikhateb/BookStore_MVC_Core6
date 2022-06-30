@@ -7,24 +7,24 @@
         public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
-            Category = new BaseRepository<Category>(_context);
-            CoverType = new BaseRepository<CoverType>(_context);
-            Product = new BaseRepository<Product>(_context);
-            Company = new BaseRepository<Company>(_context);
+            Category = new CategoryRepository(_context);
+            CoverType = new CoverTypeRepository(_context);
+            Product = new ProductRepository(_context);
+            Company = new CompanyRepository(_context);
             ShoppingCartItem = new ShoppingCartItemRepository(_context);
-            OrderDetail = new BaseRepository<OrderDetail>(_context);
+            OrderDetail = new OrderDetailRepository(_context);
             Order = new OrderRepository(_context);
-            ShippingCompany = new BaseRepository<ShippingCompany>(_context);
+            ShippingCompany = new ShippingCompanyRepository(_context);
         }
 
-        public IBaseRepository<Category> Category { get; private set; }
-        public IBaseRepository<CoverType> CoverType { get; private set; }
-        public IBaseRepository<Product> Product { get; private set; }
-        public IBaseRepository<Company> Company { get; private set; }
+        public ICategoryRepository Category { get; private set; }
+        public ICoverTypeRepository CoverType { get; private set; }
+        public IProductRepository Product { get; private set; }
+        public ICompanyRepository Company { get; private set; }
         public IShoppingCartItemRepository ShoppingCartItem { get; private set; }
-        public IBaseRepository<OrderDetail> OrderDetail { get; private set; }
+        public IOrderDetailRepository OrderDetail { get; private set; }
         public IOrderRepository Order { get; private set; }
-        public IBaseRepository<ShippingCompany> ShippingCompany { get; private set; }
+        public IShippingCompanyRepository ShippingCompany { get; private set; }
 
         public void SaveChanges()
         {

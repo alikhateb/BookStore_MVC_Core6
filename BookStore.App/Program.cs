@@ -11,8 +11,8 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("cs"))
-           .UseLazyLoadingProxies()
-           .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+           .UseLazyLoadingProxies();
+    //.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 });
 
 //register UserManager<IdentityUser> == repository for IdentityUser class - RoleManager<IdentityRole> - SignInManager<IdentityUser> 

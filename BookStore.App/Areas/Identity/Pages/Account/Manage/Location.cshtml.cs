@@ -8,7 +8,11 @@ namespace BookStore.App.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
 
+#pragma warning disable CS8618 // Non-nullable property 'Input' must contain a non-null value when exiting constructor. Consider declaring the property as nullable.
+#pragma warning disable CS8618 // Non-nullable property 'StatusMessage' must contain a non-null value when exiting constructor. Consider declaring the property as nullable.
         public LocationModel(
+#pragma warning restore CS8618 // Non-nullable property 'StatusMessage' must contain a non-null value when exiting constructor. Consider declaring the property as nullable.
+#pragma warning restore CS8618 // Non-nullable property 'Input' must contain a non-null value when exiting constructor. Consider declaring the property as nullable.
             UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager)
         {

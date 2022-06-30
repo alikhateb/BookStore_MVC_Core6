@@ -41,7 +41,9 @@
 
         public T FindObject(Expression<Func<T, bool>> filter)
         {
+#pragma warning disable CS8603 // Possible null reference return.
             return _context.Set<T>().SingleOrDefault(filter);
+#pragma warning restore CS8603 // Possible null reference return.
 
         }
 
@@ -52,7 +54,9 @@
             {
                 query = query.Include(navigationProperty);
             }
+#pragma warning disable CS8603 // Possible null reference return.
             return query.SingleOrDefault(filter);
+#pragma warning restore CS8603 // Possible null reference return.
         }
 
         public void Add(T entity)
