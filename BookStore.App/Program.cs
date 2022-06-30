@@ -10,8 +10,8 @@ builder.Services.AddRazorPages();
 //register Db options 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    options.UseLazyLoadingProxies()
-           .UseSqlServer(builder.Configuration.GetConnectionString("cs"))
+    options.UseSqlServer(builder.Configuration.GetConnectionString("cs"))
+           .UseLazyLoadingProxies()
            .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 });
 
